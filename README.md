@@ -1,6 +1,6 @@
-# youtube-memo
+# JXEM
 
-Apps that can take notes while watching videos (Chrome Extension App)
+Apps that help your dance practice with youtube (Chrome Extension App)
 
 ### Usage
 
