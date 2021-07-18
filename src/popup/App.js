@@ -93,6 +93,8 @@ const fbUIConfig = {
         (response) => {
           if (response.message) {
             console.log(response.message);
+            console.log(response.isLoggedIn);
+            console.log(response.user);
           }
         }
       );
@@ -111,10 +113,6 @@ const fbUIConfig = {
       },
     },
   ],
-  // Terms of service url.
-  // tosUrl: '<your-tos-url>',
-  // Privacy policy url.
-  // privacyPolicyUrl: '<your-privacy-policy-url>'
 };
 const fbUI = new firebaseui.auth.AuthUI(firebase.auth());
 
@@ -123,25 +121,43 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
   const [photoURL, setPhotoURL] = useState("");
+  const [user, setUser] = useState({});
 
+  // trick for init screen
   useEffect(() => {
-    const unsuscribe = firebase.auth().onAuthStateChanged(function (user) {
+    setTimeout(() => {
+      setLoading(false);
+    }, 800);
+  }, []);
+  // listen user info change
+  useEffect(() => {
+    function handleAuthStateChange(user) {
       if (user) {
         const { displayName: name, photoURL } = user;
         setName(name);
         setPhotoURL(photoURL);
         setIsLoggedIn(true);
+        setUser(user);
+        // open popup trigger injected login
+        chrome.runtime.sendMessage({
+          message: "userInfo",
+          user,
+          isLoggedIn: true,
+        });
       } else {
+        chrome.runtime.sendMessage({
+          message: "userInfo",
+          user: null,
+          isLoggedIn: false,
+        });
         setIsLoggedIn(false);
       }
-    });
-    return () => unsuscribe();
-  }, []);
+    }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 800);
+    const unsuscribe = firebase
+      .auth()
+      .onAuthStateChanged(handleAuthStateChange);
+    return () => unsuscribe();
   }, []);
 
   const handleLogin = () => {
@@ -153,6 +169,8 @@ const App = () => {
     chrome.runtime.sendMessage({ message: "userLoggedOut" }, (response) => {
       if (response.message) {
         console.log(response.message);
+        console.log(response.isLoggedIn);
+        console.log(response.user);
       }
     });
     setIsLoggedIn(false);
