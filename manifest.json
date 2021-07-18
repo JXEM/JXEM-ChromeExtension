@@ -9,14 +9,13 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.youtube.com/watch*"],
-      "css": ["dist/youtube/index.css"],
-      "js": ["dist/youtube/index.js"]
+      "matches": ["https://*/*"],
+      "css": ["dist/chat/index.css"],
+      "js": ["dist/chat/index.js"]
     }
   ],
   "content_security_policy": "script-src 'self' https://apis.google.com https://www.gstatic.com; object-src 'self'",
   "permissions": ["storage", "activeTab", "tabs"],
-  "optional_permissions": ["https://*.youtube.com/"],
   "browser_action": {
     "default_title": "Let's memo on Youtube",
     "default_popup": "popup.html",

@@ -1,7 +1,7 @@
 {
   "scripts": {
     "clean": "rm -rf dist/",
-    "dev": "npm run clean && parcel watch src/background.js src/popup/index.js src/youtube/index.js "
+    "dev": "npm run clean && parcel watch src/background.js src/popup/index.js src/chat/index.js"
   },
   "dependencies": {
     "firebase": "^8.3.2",
