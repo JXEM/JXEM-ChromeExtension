@@ -83,32 +83,20 @@ const Chat = ({ user }) => {
   }, [user]);
 
   useEffect(() => {
-    async function getInitData() {
-      const db = firebase.database();
-      const data = await db.ref("messages/").limitToLast(5).get();
-      if (data.exists) {
-        const newData = [];
-        data.forEach((item) => {
-          newData.push(item.val());
-        });
-        setData(newData);
-      }
-    }
     function listenData() {
       const db = firebase.database();
-      db.ref("messages/").on("child_added", (snapshot) => {
-        const data = snapshot.val();
-        setData((v) => [...v, data]);
-      });
+      db.ref("messages/")
+        .limitToLast(5)
+        .on("child_added", (snapshot) => {
+          const data = snapshot.val();
+          setData((v) => [...v, data]);
+        });
     }
-    getInitData();
     listenData();
   }, []);
 
   function handleSave(e) {
     if (e.code === "Enter") {
-      // setData([...data, [, value]]);
-      //
       const db = firebase.database();
       db.ref("messages/").push({
         userame: name,
@@ -121,7 +109,14 @@ const Chat = ({ user }) => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper
+      onMouseEnter={() => {
+        document.body.style.overflow = "hidden";
+      }}
+      onMouseLeave={() => {
+        document.body.style.overflow = "scroll";
+      }}
+    >
       <ChatView ref={chatViewRef}>
         {data.map((chat, idx) => {
           if (chat.id !== uid) {
