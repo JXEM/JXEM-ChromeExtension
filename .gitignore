@@ -6,3 +6,5 @@ dist/
 
 # output dir
 JXEM/
+
+.DS_Store
