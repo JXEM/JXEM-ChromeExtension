@@ -1,7 +1,8 @@
 {
   "scripts": {
     "clean": "rm -rf dist/",
-    "dev": "npm run clean && parcel watch src/background.js src/popup/index.js src/chat/index.js src/youtube/index.js"
+    "dev": "npm run clean && parcel watch src/background.js src/popup/index.js src/chat/index.js src/youtube/index.js",
+    "build": "rm -rf JXEM/ && parcel build src/chat/index.js --dist-dir JXEM/dist/chat/ && parcel build src/popup/index.js --dist-dir JXEM/dist/popup/ && parcel build src/background.js --dist-dir JXEM/dist/ && cp manifest.json JXEM/manifest.json && cp popup.html JXEM/popup.html && cp -r images/ JXEM/images/"
   },
   "dependencies": {
     "axios": "^0.21.1",

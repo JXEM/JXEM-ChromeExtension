@@ -2,5 +2,9 @@ node_modules/
 .cache/
 dist/
 .parcel-cache/
+.DS_Store
+
+# output dir
+JXEM/
 
 .DS_Store
